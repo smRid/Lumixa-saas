@@ -5,7 +5,6 @@ import Dashboard from "./pages/Dashboard";
 import GenerateImages from "./pages/GenerateImages";
 import RemoveBackground from "./pages/RemoveBackground";
 import RemoveObject from "./pages/RemoveObject";
-import Community from "./pages/Community";
 import ImageEnhancer from "./pages/ImageEnhancer";
 import PhotoRestoration from "./pages/PhotoRestoration";
 import BackgroundBlur from "./pages/BackgroundBlur";
@@ -30,7 +29,6 @@ const App = () => {
           <Route path='background-blur' element={<BackgroundBlur />} />
           <Route path='logo-generator' element={<LogoGenerator />} />
           <Route path='youtube-thumbnail-generator' element={<YoutubeThumbnailGenerator />} />
-          <Route path='community' element={<Community />} />
         </Route>
       </Routes>
     </div>
