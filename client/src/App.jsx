@@ -11,7 +11,6 @@ import PhotoRestoration from "./pages/PhotoRestoration";
 import BackgroundBlur from "./pages/BackgroundBlur";
 import LogoGenerator from "./pages/LogoGenerator";
 import YoutubeThumbnailGenerator from "./pages/YoutubeThumbnailGenerator";
-import StyleTransfer from "./pages/StyleTransfer";
 import { Toaster } from "react-hot-toast";
 
 const App = () => {
@@ -31,7 +30,6 @@ const App = () => {
           <Route path='background-blur' element={<BackgroundBlur />} />
           <Route path='logo-generator' element={<LogoGenerator />} />
           <Route path='youtube-thumbnail-generator' element={<YoutubeThumbnailGenerator />} />
-          <Route path='style-transfer' element={<StyleTransfer />} />
           <Route path='community' element={<Community />} />
         </Route>
       </Routes>

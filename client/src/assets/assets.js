@@ -5,7 +5,7 @@ import star_icon from "./star_icon.svg";
 import star_dull_icon from "./star_dull_icon.svg";
 import profile_img_1 from "./profile_img_1.png";
 import arrow_icon from "./arrow_icon.svg";
-import { Image, Eraser, Scissors, ImageIcon, ScanText, Aperture, Palette, PlaySquare, Sparkles } from 'lucide-react'
+import { Image, Eraser, Scissors, ImageIcon, ScanText, Aperture, Palette, PlaySquare } from 'lucide-react'
 
 export const assets = {
     logo,
@@ -73,13 +73,6 @@ export const AiToolsData = [
         Icon: PlaySquare,
         bg: { from: '#DC2626', to: '#F97316' },
         path: '/ai/youtube-thumbnail-generator'
-    },
-    {
-        title: 'AI Style Transfer',
-        description: 'Turn photos into anime, oil painting, watercolor, sketch, cartoon, or cyberpunk artwork.',
-        Icon: Sparkles,
-        bg: { from: '#C026D3', to: '#7C3AED' },
-        path: '/ai/style-transfer'
     }
 ]
 
