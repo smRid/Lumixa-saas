@@ -532,14 +532,28 @@ export const enhanceImage = async (req, res) => {
 export const generateLogo = async (req, res) => {
     try {
         const { userId } = req.auth();
-        const { company_name, industry, style, colors, description } = req.body;
+        const {
+            company_name,
+            industry,
+            style,
+            colors,
+            description,
+            font_style,
+            include_icon,
+            include_typography,
+            light_dark_variants,
+            social_versions,
+            favicon_versions,
+            editable_layers,
+            vector_export
+        } = req.body;
         const plan = req.plan;
 
         if (plan !== 'premium') {
             return res.json({ success: false, message: "This feature is only available for premium subscriptions." })
         }
 
-        const prompt = `Create a professional logo for a company called "${company_name}" in the ${industry} industry. Style: ${style}. Color scheme: ${colors}. Additional description: ${description}. The logo should be modern, clean, and suitable for business use. Make it vector-style and professional.`
+        const prompt = `Create a professional startup-ready logo for "${company_name}" in the ${industry} industry. Style: ${style}. Brand colors: ${colors}. Font direction: ${font_style}. Additional description: ${description}. Include icon mark: ${include_icon}. Include typography lockup: ${include_typography}. Plan for light and dark variants: ${light_dark_variants}. Plan editable logo layers for icon/text/colors: ${editable_layers}. Vector/SVG export intent: ${vector_export}. Social versions: ${social_versions}. Favicon versions: ${favicon_versions}. The logo should be clean, centered, brand-consistent, high contrast, and suitable for business use.`
 
         const formData = new FormData()
         formData.append('prompt', prompt)
@@ -563,6 +577,7 @@ export const generateLogo = async (req, res) => {
         res.json({
             success: true,
             content: secure_url,
+            palette: colors ? colors.split(',').map(color => color.trim()).filter(Boolean) : [],
             message: "Logo generated successfully"
         });
 
