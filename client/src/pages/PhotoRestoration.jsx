@@ -56,7 +56,7 @@ const PhotoRestoration = () => {
       } else {
         toast.error(data.message || "Restoration failed.");
       }
-    } catch (err) {
+    } catch {
       toast.error("Error restoring photo.");
     } finally {
       setLoading(false);
