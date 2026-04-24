@@ -11,12 +11,33 @@ const Layout = () => {
   const { isLoaded, user } = useUser()
   const { openSignIn } = useClerk()
 
-  if (!isLoaded) {
-    return (
-      <div className='flex items-center justify-center h-screen bg-[#F4F7FB] text-gray-600'>
-        Loading...
+  const renderAuthGate = (loading = false) => (
+    <div className='min-h-screen bg-[#0D0B1E] flex items-center justify-center px-4'>
+      <div className='w-full max-w-md rounded-2xl border border-purple-900/40 bg-[#1A1730] p-8 text-center shadow-2xl shadow-purple-950/30'>
+        <div className='mx-auto mb-5 w-12 h-12 rounded-xl bg-gradient-to-br from-purple-600 to-pink-500 flex items-center justify-center'>
+          <span className='text-white font-bold text-xl'>L</span>
+        </div>
+        <h1 className='text-2xl font-bold text-white mb-2'>{loading ? 'Preparing sign in...' : 'Sign in to continue'}</h1>
+        <p className='text-gray-400 mb-6'>Access your Lumixa AI workspace and tools.</p>
+        <button
+          onClick={() => openSignIn()}
+          disabled={loading}
+          className='w-full rounded-xl bg-gradient-to-r from-pink-500 to-purple-600 px-5 py-3 font-medium text-white shadow-lg shadow-pink-500/25 transition hover:from-pink-400 hover:to-purple-500 disabled:cursor-not-allowed disabled:opacity-50'
+        >
+          {loading ? 'Loading auth...' : 'Sign in'}
+        </button>
+        <button
+          onClick={() => navigate('/')}
+          className='mt-3 w-full rounded-xl border border-purple-900/50 px-5 py-3 font-medium text-gray-300 transition hover:border-purple-500/50'
+        >
+          Back to home
+        </button>
       </div>
-    )
+    </div>
+  )
+
+  if (!isLoaded) {
+    return renderAuthGate(true)
   }
 
   return user ? (
@@ -36,27 +57,7 @@ const Layout = () => {
         </div>
       </div>
   ) : (
-    <div className='min-h-screen bg-[#0D0B1E] flex items-center justify-center px-4'>
-      <div className='w-full max-w-md rounded-2xl border border-purple-900/40 bg-[#1A1730] p-8 text-center shadow-2xl shadow-purple-950/30'>
-        <div className='mx-auto mb-5 w-12 h-12 rounded-xl bg-gradient-to-br from-purple-600 to-pink-500 flex items-center justify-center'>
-          <span className='text-white font-bold text-xl'>L</span>
-        </div>
-        <h1 className='text-2xl font-bold text-white mb-2'>Sign in to continue</h1>
-        <p className='text-gray-400 mb-6'>Access your Lumixa AI workspace and tools.</p>
-        <button
-          onClick={() => openSignIn()}
-          className='w-full rounded-xl bg-gradient-to-r from-pink-500 to-purple-600 px-5 py-3 font-medium text-white shadow-lg shadow-pink-500/25 transition hover:from-pink-400 hover:to-purple-500'
-        >
-          Sign in
-        </button>
-        <button
-          onClick={() => navigate('/')}
-          className='mt-3 w-full rounded-xl border border-purple-900/50 px-5 py-3 font-medium text-gray-300 transition hover:border-purple-500/50'
-        >
-          Back to home
-        </button>
-      </div>
-    </div>
+    renderAuthGate()
   ) 
 }
 
