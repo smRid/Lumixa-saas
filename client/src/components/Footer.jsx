@@ -29,11 +29,8 @@ const Footer = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12">
                     {/* Brand Section */}
                     <div className="lg:col-span-2">
-                        <div className='flex items-center gap-2 mb-6'>
-                            <div className='w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-400 via-blue-500 to-fuchsia-500 flex items-center justify-center shadow-lg shadow-cyan-500/20'>
-                                <span className='text-white font-bold text-lg'>P</span>
-                            </div>
-                            <span className='text-white font-semibold text-xl'>Photonix AI</span>
+                        <div className='flex items-center mb-6'>
+                            <img src="/logo.png" alt="Photonix AI" className='h-12 w-auto max-w-[190px] object-contain' />
                         </div>
                         <p className="text-gray-400 mb-6 max-w-sm leading-relaxed">
                             Experience the power of AI with Photonix AI. Generate, restore, enhance, and refine photos with premium AI tools.
@@ -101,7 +98,7 @@ const Footer = () => {
                 {/* Bottom bar */}
                 <div className="mt-16 pt-8 border-t border-purple-900/30 flex flex-col sm:flex-row items-center justify-between gap-4">
                     <p className="text-gray-500 text-sm flex items-center gap-1">
-                        &copy; {currentYear} Photonix AI. Made with <Heart className='w-4 h-4 text-pink-500 fill-pink-500' /> by Sarker Mohammad Riduan
+                        &copy; {currentYear} Photonix AI. Developed by Sarker Mohammad Riduan
                     </p>
 
                     {/* Social Links */}
