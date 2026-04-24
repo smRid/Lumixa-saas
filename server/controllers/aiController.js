@@ -292,7 +292,7 @@ export const removeImageBackground = async (req, res) => {
 export const removeImageObject = async (req, res) => {
     try {
         const { userId } = req.auth();
-        const { object } = req.body;
+        const { object, texture_fill = true, edge_control = 50 } = req.body;
         const image = req.file;
         const plan = req.plan;
 
@@ -300,20 +300,46 @@ export const removeImageObject = async (req, res) => {
             return res.json({ success: false, message: "This feature is only available for premium subscriptions." })
         }
 
+        if (!image) {
+            return res.json({ success: false, message: "Please upload an image file." })
+        }
+
+        const objects = object
+            .split(',')
+            .map((item) => item.trim())
+            .filter(Boolean)
+            .slice(0, 8);
+
+        if (!objects.length) {
+            return res.json({ success: false, message: "Please describe at least one object to remove." })
+        }
+
         const { public_id } = await cloudinary.uploader.upload(image.path)
 
+        const transformation = objects.map((item) => ({ effect: `gen_remove:${item}` }));
+
+        if (texture_fill === 'true' || texture_fill === true) {
+            transformation.push({ effect: "improve" });
+        }
+
+        if (Number(edge_control) > 60) {
+            transformation.push({ effect: "sharpen:40" });
+        }
+
+        transformation.push({ quality: "auto:best" }, { fetch_format: "auto" });
+
         const imageUrl = cloudinary.url(public_id, {
-            transformation: [{ effect: `gen_remove:${object}` }],
+            transformation,
             resource_type: 'image'
         })
 
-        await sql` INSERT INTO creations (user_id, prompt, content, type) VALUES (${userId}, ${`Removed ${object} from image`}, ${imageUrl}, 'image')
+        await sql` INSERT INTO creations (user_id, prompt, content, type) VALUES (${userId}, ${`Removed ${objects.join(', ')} from image`}, ${imageUrl}, 'image')
         `;
 
         res.json({
             success: true,
             content: imageUrl,
-            message: "Remove object successfully"
+            message: objects.length === 1 ? "Object removed successfully" : `${objects.length} objects removed successfully`
         });
 
     } catch (error) {
@@ -387,12 +413,21 @@ export const enhanceImage = async (req, res) => {
         let transformation = {};
 
         switch (enhancement_type) {
-            case 'upscale':
+            case 'upscale_2x':
                 transformation = {
                     transformation: [
                         { quality: "auto:best" },
                         { fetch_format: "auto" },
-                        { width: 2000, height: 2000, crop: "scale" }
+                        { width: "iw_mul_2.0", crop: "scale" }
+                    ]
+                };
+                break;
+            case 'upscale_4x':
+                transformation = {
+                    transformation: [
+                        { quality: "auto:best" },
+                        { fetch_format: "auto" },
+                        { width: "iw_mul_4.0", crop: "scale" }
                     ]
                 };
                 break;
@@ -410,6 +445,46 @@ export const enhanceImage = async (req, res) => {
                     transformation: [
                         { effect: "improve" },
                         { effect: "auto_contrast" },
+                        { quality: "auto:best" },
+                        { fetch_format: "auto" }
+                    ]
+                };
+                break;
+            case 'face_enhance':
+                transformation = {
+                    transformation: [
+                        { effect: "gen_face_enhance" },
+                        { quality: "auto:best" },
+                        { fetch_format: "auto" }
+                    ]
+                };
+                break;
+            case 'low_light':
+                transformation = {
+                    transformation: [
+                        { effect: "auto_brightness:90" },
+                        { effect: "auto_contrast" },
+                        { effect: "improve" },
+                        { quality: "auto:best" },
+                        { fetch_format: "auto" }
+                    ]
+                };
+                break;
+            case 'color_correction':
+                transformation = {
+                    transformation: [
+                        { effect: "auto_color" },
+                        { effect: "auto_contrast" },
+                        { quality: "auto:best" },
+                        { fetch_format: "auto" }
+                    ]
+                };
+                break;
+            case 'old_photo_restore':
+                transformation = {
+                    transformation: [
+                        { effect: "gen_restore" },
+                        { effect: "auto_color" },
                         { quality: "auto:best" },
                         { fetch_format: "auto" }
                     ]
@@ -983,7 +1058,10 @@ export const blurBackground = async (req, res) => {
             preset = 'none',
             replace_background = false,
             background_color = '#000000',
-            background_scene = 'none'
+            background_scene = 'none',
+            custom_bokeh_prompt = '',
+            edge_refinement = 'hair',
+            focus_control = 65
         } = req.body;
         const plan = req.plan;
 
@@ -1046,7 +1124,9 @@ export const blurBackground = async (req, res) => {
         } else {
             // Use gen_background_replace to blur the background while keeping the subject
             // This creates a DSLR-like depth of field effect
-            const blurPrompt = bokeh_style === 'cinematic'
+            const blurPrompt = bokeh_style === 'custom' && custom_bokeh_prompt
+                ? custom_bokeh_prompt
+                : bokeh_style === 'cinematic'
                 ? 'soft blurred cinematic background with bokeh lights'
                 : bokeh_style === 'circular'
                     ? 'smooth blurred background with circular bokeh'
@@ -1072,6 +1152,17 @@ export const blurBackground = async (req, res) => {
                 { effect: "sharpen:50" },
                 { effect: "auto_contrast" }
             );
+        }
+
+        if (edge_refinement === 'hair') {
+            transformation.push({ effect: "sharpen:20" });
+        } else if (edge_refinement === 'product') {
+            transformation.push({ effect: "sharpen:60" });
+        }
+
+        const focusStrength = clampNumber(focus_control, 1, 100, 65);
+        if (focusStrength > 75) {
+            transformation.push({ effect: "sharpen:40" });
         }
 
         // Add quality settings
@@ -1103,7 +1194,9 @@ export const blurBackground = async (req, res) => {
                 bokeh_style,
                 subject_mode,
                 preset,
-                replace_background: isReplacingBackground
+                replace_background: isReplacingBackground,
+                edge_refinement,
+                focus_control: focusStrength
             }
         });
 

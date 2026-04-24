@@ -11,7 +11,8 @@ const BackgroundBlur = () => {
     const bokehStyles = [
         { value: 'soft', label: 'Soft', description: 'Gentle, dreamy blur effect' },
         { value: 'circular', label: 'Circular', description: 'Classic DSLR-style circular bokeh' },
-        { value: 'cinematic', label: 'Cinematic', description: 'Strong blur with vignette for film look' }
+        { value: 'cinematic', label: 'Cinematic', description: 'Strong blur with vignette for film look' },
+        { value: 'custom', label: 'Custom', description: 'Describe your own bokeh look' }
     ]
 
     const subjectModes = [
@@ -39,6 +40,9 @@ const BackgroundBlur = () => {
     const [preset, setPreset] = useState('none')
     const [replaceBackground, setReplaceBackground] = useState(false)
     const [backgroundColor, setBackgroundColor] = useState('#1a1a2e')
+    const [customBokehPrompt, setCustomBokehPrompt] = useState('')
+    const [edgeRefinement, setEdgeRefinement] = useState('hair')
+    const [focusControl, setFocusControl] = useState(65)
 
     const { getToken } = useAuth()
 
@@ -77,6 +81,9 @@ const BackgroundBlur = () => {
             formData.append('preset', preset)
             formData.append('replace_background', replaceBackground)
             formData.append('background_color', backgroundColor)
+            formData.append('custom_bokeh_prompt', customBokehPrompt)
+            formData.append('edge_refinement', edgeRefinement)
+            formData.append('focus_control', focusControl)
 
             const { data } = await axios.post('/api/ai/blur-background', formData, {
                 headers: {
@@ -180,6 +187,41 @@ const BackgroundBlur = () => {
                     <p className='text-xs text-gray-500 mt-1'>
                         {bokehStyles.find(s => s.value === bokehStyle)?.description}
                     </p>
+                    {bokehStyle === 'custom' && (
+                        <input
+                            value={customBokehPrompt}
+                            onChange={(e) => setCustomBokehPrompt(e.target.value)}
+                            className='mt-2 w-full p-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-[#9234EA]'
+                            placeholder='e.g., warm city lights, soft hexagonal bokeh'
+                        />
+                    )}
+                </div>
+
+                {/* Selective Focus and Edge Refinement */}
+                <div className='mb-6 grid grid-cols-1 sm:grid-cols-2 gap-4'>
+                    <div>
+                        <label className='block text-sm font-medium mb-2'>Selective Focus: {focusControl}%</label>
+                        <input
+                            type='range'
+                            min='1'
+                            max='100'
+                            value={focusControl}
+                            onChange={(e) => setFocusControl(e.target.value)}
+                            className='w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-[#9234EA]'
+                        />
+                    </div>
+                    <div>
+                        <label className='block text-sm font-medium mb-2'>Edge Refinement</label>
+                        <select
+                            value={edgeRefinement}
+                            onChange={(e) => setEdgeRefinement(e.target.value)}
+                            className='w-full p-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-[#9234EA]'
+                        >
+                            <option value='hair'>Hair detail</option>
+                            <option value='product'>Product edge</option>
+                            <option value='soft'>Soft feather</option>
+                        </select>
+                    </div>
                 </div>
 
                 {/* Subject Mode */}
@@ -325,6 +367,8 @@ const BackgroundBlur = () => {
                                 <p><strong>Bokeh:</strong> {bokehStyles.find(s => s.value === bokehStyle)?.label}</p>
                                 <p><strong>Mode:</strong> {subjectModes.find(m => m.value === subjectMode)?.label}</p>
                                 <p><strong>Preset:</strong> {presets.find(p => p.value === preset)?.label}</p>
+                                <p><strong>Focus:</strong> {focusControl}%</p>
+                                <p><strong>Edges:</strong> {edgeRefinement}</p>
                             </div>
                         </div>
 

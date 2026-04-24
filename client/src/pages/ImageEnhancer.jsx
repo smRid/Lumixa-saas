@@ -10,9 +10,14 @@ const ImageEnhancer = () => {
 
     const enhancementTypes = [
         { value: 'auto_enhance', label: 'Auto Enhance', description: 'Automatically improve brightness, contrast, and color' },
-        { value: 'upscale', label: 'Upscale', description: 'Increase image resolution and quality' },
-        { value: 'sharpen', label: 'Sharpen', description: 'Make image details more crisp and clear' },
-        { value: 'denoise', label: 'Denoise', description: 'Remove noise and improve image quality' }
+        { value: 'upscale_2x', label: 'Upscale 2x', description: 'Double image resolution with quality optimization' },
+        { value: 'upscale_4x', label: 'Upscale 4x', description: 'Increase resolution for larger exports' },
+        { value: 'denoise', label: 'Noise Reduction', description: 'Remove noise and improve image quality' },
+        { value: 'sharpen', label: 'Sharpen & Clarity', description: 'Make image details more crisp and clear' },
+        { value: 'face_enhance', label: 'Face Enhancement', description: 'Improve portrait clarity and facial detail' },
+        { value: 'low_light', label: 'Low-Light Recovery', description: 'Recover brightness and contrast from dark photos' },
+        { value: 'color_correction', label: 'Color Correction', description: 'Fix white balance, contrast, and color cast' },
+        { value: 'old_photo_restore', label: 'Old Photo Restoration', description: 'Repair faded, damaged, or vintage photos' }
     ]
 
     const [selectedEnhancement, setSelectedEnhancement] = useState('auto_enhance')
@@ -20,6 +25,7 @@ const ImageEnhancer = () => {
     const [previewImage, setPreviewImage] = useState('')
     const [loading, setLoading] = useState(false)
     const [enhancedImage, setEnhancedImage] = useState('')
+    const [comparison, setComparison] = useState(50)
 
     const { getToken } = useAuth()
 
@@ -37,6 +43,7 @@ const ImageEnhancer = () => {
             }
             reader.readAsDataURL(file)
             setEnhancedImage('')
+            setComparison(50)
         }
     }
 
@@ -175,27 +182,26 @@ const ImageEnhancer = () => {
                 ) : (
                     <div className='space-y-4'>
                         {/* Before and After Comparison */}
-                        <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
-                            <div>
-                                <h3 className='text-sm font-medium mb-2 text-gray-600'>Original</h3>
-                                <div className='border rounded-lg overflow-hidden'>
-                                    <img 
-                                        src={previewImage} 
-                                        alt="Original" 
-                                        className='w-full h-auto'
-                                    />
-                                </div>
+                        <div>
+                            <div className='flex items-center justify-between mb-2'>
+                                <h3 className='text-sm font-medium text-gray-600'>Side-by-side Comparison</h3>
+                                <span className='text-xs text-gray-500'>{comparison}% enhanced</span>
                             </div>
-                            <div>
-                                <h3 className='text-sm font-medium mb-2 text-gray-600'>Enhanced</h3>
-                                <div className='border rounded-lg overflow-hidden'>
-                                    <img 
-                                        src={enhancedImage} 
-                                        alt="Enhanced" 
-                                        className='w-full h-auto'
-                                    />
+                            <div className='relative border rounded-lg overflow-hidden bg-gray-100'>
+                                <img src={previewImage} alt="Original" className='w-full h-auto block' />
+                                <div className='absolute inset-0 overflow-hidden' style={{ width: `${comparison}%` }}>
+                                    <img src={enhancedImage} alt="Enhanced" className='h-full w-auto max-w-none' />
                                 </div>
+                                <div className='absolute top-0 bottom-0 w-0.5 bg-white shadow' style={{ left: `${comparison}%` }} />
                             </div>
+                            <input
+                                type='range'
+                                min='0'
+                                max='100'
+                                value={comparison}
+                                onChange={(e) => setComparison(e.target.value)}
+                                className='mt-3 w-full accent-[#3C81F6]'
+                            />
                         </div>
                         
                         {/* Enhancement Details */}
