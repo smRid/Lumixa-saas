@@ -15,7 +15,9 @@ import {
     generateCoverLetter,
     imageToText,
     restorePhoto,
-    blurBackground
+    blurBackground,
+    generateThumbnail,
+    styleTransfer
 } from "../controllers/aiController.js";
 import { upload } from "../config/multer.js";
 
@@ -37,6 +39,8 @@ aiRouter.post('/remove-image-object', upload.single('image'), auth, removeImageO
 aiRouter.post('/enhance-image', upload.single('image'), auth, enhanceImage)
 aiRouter.post('/restore-photo', upload.single('image'), auth, restorePhoto)
 aiRouter.post('/blur-background', upload.single('image'), auth, blurBackground)
+aiRouter.post('/generate-thumbnail', auth, generateThumbnail)
+aiRouter.post('/style-transfer', upload.fields([{ name: 'image', maxCount: 1 }, { name: 'reference_image', maxCount: 1 }]), auth, styleTransfer)
 
 // File-based AI tools
 aiRouter.post('/resume-review', upload.single('resume'), auth, resumeReview)

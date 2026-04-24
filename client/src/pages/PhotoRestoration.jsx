@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { useAuth } from "@clerk/clerk-react";
 
 const restorationOptions = [
   {
@@ -30,6 +31,7 @@ const PhotoRestoration = () => {
   const [file, setFile] = useState(null);
   const [restoredUrl, setRestoredUrl] = useState("");
   const [loading, setLoading] = useState(false);
+  const { getToken } = useAuth();
 
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
@@ -48,7 +50,10 @@ const PhotoRestoration = () => {
     formData.append("restoration_type", selectedType);
     try {
       const { data } = await axios.post("/api/ai/restore-photo", formData, {
-        headers: { "Content-Type": "multipart/form-data" }
+        headers: {
+          Authorization: `Bearer ${await getToken()}`,
+          "Content-Type": "multipart/form-data"
+        }
       });
       if (data.success) {
         setRestoredUrl(data.content);
