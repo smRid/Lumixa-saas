@@ -14,11 +14,11 @@ const Layout = () => {
   const renderAuthGate = (loading = false) => (
     <div className='min-h-screen bg-[#0D0B1E] flex items-center justify-center px-4'>
       <div className='w-full max-w-md rounded-2xl border border-purple-900/40 bg-[#1A1730] p-8 text-center shadow-2xl shadow-purple-950/30'>
-        <div className='mx-auto mb-5 w-12 h-12 rounded-xl bg-gradient-to-br from-purple-600 to-pink-500 flex items-center justify-center'>
-          <span className='text-white font-bold text-xl'>L</span>
+        <div className='mx-auto mb-5 w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-400 via-blue-500 to-fuchsia-500 flex items-center justify-center shadow-lg shadow-cyan-500/20'>
+          <span className='text-white font-bold text-xl'>P</span>
         </div>
         <h1 className='text-2xl font-bold text-white mb-2'>{loading ? 'Preparing sign in...' : 'Sign in to continue'}</h1>
-        <p className='text-gray-400 mb-6'>Access your Lumixa AI workspace and tools.</p>
+        <p className='text-gray-400 mb-6'>Access your Photonix AI workspace and tools.</p>
         <button
           onClick={() => openSignIn()}
           disabled={loading}
@@ -43,7 +43,12 @@ const Layout = () => {
   return user ? (
       <div className='flex flex-col items-start justify-start h-screen'>
         <nav className='w-full px-8 min-h-14 flex items-center justify-between border-b border-gray-200'>
-          <img className='cursor-pointer w-32 sm:w-44' src="/logo.png" alt="" onClick={() => navigate('/')} />
+          <button className='flex items-center gap-2 cursor-pointer' onClick={() => navigate('/')}>
+            <span className='w-9 h-9 rounded-xl bg-gradient-to-br from-cyan-400 via-blue-500 to-fuchsia-500 flex items-center justify-center shadow-lg shadow-cyan-500/20'>
+              <span className='text-white font-bold'>P</span>
+            </span>
+            <span className='text-lg font-semibold text-gray-900'>Photonix AI</span>
+          </button>
           {
             sidebar ? <X onClick={()=> setSidebar(false)} className='w-6 h-6 text-gray-600 sm:hidden'/>
             : <Menu onClick={()=> setSidebar(true)} className='w-6 h-6 text-gray-600 sm:hidden'/>

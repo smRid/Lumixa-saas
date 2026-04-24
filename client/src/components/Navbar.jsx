@@ -11,10 +11,10 @@ const Navbar = () => {
   return (
     <div className='fixed z-50 w-full bg-[#0D0B1E]/90 backdrop-blur-xl border-b border-purple-900/30 flex justify-between items-center py-4 px-4 sm:px-20 xl:px-32'>
       <div className='flex items-center gap-2 cursor-pointer' onClick={() => navigate('/')}>
-        <div className='w-10 h-10 rounded-xl bg-gradient-to-br from-purple-600 to-pink-500 flex items-center justify-center'>
-          <span className='text-white font-bold text-lg'>L</span>
+        <div className='w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-400 via-blue-500 to-fuchsia-500 flex items-center justify-center shadow-lg shadow-cyan-500/20'>
+          <span className='text-white font-bold text-lg'>P</span>
         </div>
-        <span className='text-white font-semibold text-xl hidden sm:block'>Lumixa AI</span>
+        <span className='text-white font-semibold text-xl hidden sm:block'>Photonix AI</span>
       </div>
 
       {

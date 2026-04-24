@@ -1,1 +1,1 @@
-# -Lumixa-ai
+# Photonix AI

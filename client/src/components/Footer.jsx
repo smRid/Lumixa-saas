@@ -30,13 +30,13 @@ const Footer = () => {
                     {/* Brand Section */}
                     <div className="lg:col-span-2">
                         <div className='flex items-center gap-2 mb-6'>
-                            <div className='w-10 h-10 rounded-xl bg-gradient-to-br from-purple-600 to-pink-500 flex items-center justify-center'>
-                                <span className='text-white font-bold text-lg'>L</span>
+                            <div className='w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-400 via-blue-500 to-fuchsia-500 flex items-center justify-center shadow-lg shadow-cyan-500/20'>
+                                <span className='text-white font-bold text-lg'>P</span>
                             </div>
-                            <span className='text-white font-semibold text-xl'>Lumixa AI</span>
+                            <span className='text-white font-semibold text-xl'>Photonix AI</span>
                         </div>
                         <p className="text-gray-400 mb-6 max-w-sm leading-relaxed">
-                            Experience the power of AI with Lumixa AI. Generate, restore, enhance, and refine photos with premium AI tools.
+                            Experience the power of AI with Photonix AI. Generate, restore, enhance, and refine photos with premium AI tools.
                         </p>
 
                         {/* Newsletter */}
@@ -101,7 +101,7 @@ const Footer = () => {
                 {/* Bottom bar */}
                 <div className="mt-16 pt-8 border-t border-purple-900/30 flex flex-col sm:flex-row items-center justify-between gap-4">
                     <p className="text-gray-500 text-sm flex items-center gap-1">
-                        © {currentYear} Lumixa AI. Made with <Heart className='w-4 h-4 text-pink-500 fill-pink-500' /> by Sarker Mohammad Riduan
+                        &copy; {currentYear} Photonix AI. Made with <Heart className='w-4 h-4 text-pink-500 fill-pink-500' /> by Sarker Mohammad Riduan
                     </p>
 
                     {/* Social Links */}

@@ -7,7 +7,7 @@ const Testimonial = () => {
             name: 'Briar Martin',
             role: 'Photo Creator',
             rating: 5,
-            text: 'Lumixa AI has completely transformed how I create visuals. The image generation is incredible!'
+            text: 'Photonix AI has completely transformed how I create visuals. The image generation is incredible!'
         },
         {
             image: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=200',
@@ -47,7 +47,7 @@ const Testimonial = () => {
                         Loved by Creators
                     </h2>
                     <p className='text-gray-400 max-w-xl mx-auto text-lg'>
-                        See what our community of creators is saying about Lumixa AI
+                        See what our community of creators is saying about Photonix AI
                     </p>
                 </div>
 

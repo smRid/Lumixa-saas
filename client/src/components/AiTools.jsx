@@ -17,7 +17,7 @@ const AiTools = () => {
     }
 
     return (
-        <div className='py-24 bg-[#0D0B1E]'>
+        <div id='tools' className='py-24 bg-[#0D0B1E]'>
             <div className='px-4 sm:px-20 xl:px-32'>
                 {/* Section Header */}
                 <div className='text-center mb-16'>
