@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { ArrowRight, CheckCircle2, Image, ShieldCheck, Sparkles, WandSparkles, Zap } from "lucide-react";
+import { ArrowRight, CheckCircle2, Image, ShieldCheck, Sparkles, Zap } from "lucide-react";
 
 const previewImages = [
     { src: "/preview.png", alt: "AI generated portrait preview", className: "lg:col-span-2" },
@@ -82,18 +82,6 @@ const Hero = () => {
 
                     <div className='relative'>
                         <div className='rounded-[2rem] border border-white/10 bg-white/[0.08] p-3 shadow-2xl shadow-black/40 backdrop-blur'>
-                            <div className='mb-3 flex items-center justify-between rounded-2xl border border-white/10 bg-[#101522] px-4 py-3'>
-                                <div className='flex items-center gap-2'>
-                                    <span className='h-3 w-3 rounded-full bg-[#ff6b6b]' />
-                                    <span className='h-3 w-3 rounded-full bg-[#ffd166]' />
-                                    <span className='h-3 w-3 rounded-full bg-[#06d6a0]' />
-                                </div>
-                                <div className='flex items-center gap-2 text-xs font-medium text-slate-300'>
-                                    <WandSparkles className='h-4 w-4 text-cyan-300' />
-                                    Live render board
-                                </div>
-                            </div>
-
                             <div className='grid grid-cols-2 gap-3'>
                                 {previewImages.map((image) => (
                                     <div key={image.src} className={`group overflow-hidden rounded-2xl border border-white/10 bg-[#151A27] ${image.className}`}>
