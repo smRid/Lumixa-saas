@@ -5,7 +5,7 @@ import star_icon from "./star_icon.svg";
 import star_dull_icon from "./star_dull_icon.svg";
 import profile_img_1 from "./profile_img_1.png";
 import arrow_icon from "./arrow_icon.svg";
-import { SquarePen, Hash, Image, Eraser, Scissors, FileText, ImageIcon, Palette, Mail, Code, CheckCircle, Briefcase, ScanText } from 'lucide-react'
+import { Image, Eraser, Scissors, ImageIcon, ScanText, Aperture } from 'lucide-react'
 
 export const assets = {
     logo,
@@ -19,46 +19,11 @@ export const assets = {
 
 export const AiToolsData = [
     {
-        title: 'AI Article Writer',
-        description: 'Generate high-quality, engaging articles on any topic with our AI writing technology.',
-        Icon: SquarePen,
-        bg: { from: '#3588F2', to: '#0BB0D7' },
-        path: '/ai/write-article'
-    },
-    {
-        title: 'Logo Generator',
-        description: 'Create professional logos for your business using AI with customizable styles and colors.',
-        Icon: Palette,
-        bg: { from: '#9333EA', to: '#C026D3' },
-        path: '/ai/logo-generator'
-    },
-    {
         title: 'Photo Restoration',
         description: 'Restore old photos: remove scratches, colorize, deblur, and repair faces with AI.',
         Icon: ScanText,
         bg: { from: '#3C81F6', to: '#9234EA' },
         path: '/ai/photo-restoration'
-    },
-    {
-        title: 'Email Generator',
-        description: 'Create professional emails for any purpose with customizable tone and style.',
-        Icon: Mail,
-        bg: { from: '#1E90FF', to: '#4169E1' },
-        path: '/ai/email-generator'
-    },
-    {
-        title: 'README Generator',
-        description: 'Generate comprehensive README files for your projects with proper formatting.',
-        Icon: Code,
-        bg: { from: '#32CD32', to: '#228B22' },
-        path: '/ai/readme-generator'
-    },
-    {
-        title: 'Cover Letter Generator',
-        description: 'Create compelling cover letters tailored to specific jobs and companies.',
-        Icon: Briefcase,
-        bg: { from: '#DC143C', to: '#B22222' },
-        path: '/ai/cover-letter-generator'
     },
     {
         title: 'AI Image Generation',
@@ -89,20 +54,11 @@ export const AiToolsData = [
         path: '/ai/image-enhancer'
     },
     {
-        title: 'Logo Generator',
-        description: 'Create professional logos for your business using AI with customizable styles and colors.',
-        Icon: Palette,
-        bg: { from: '#9333EA', to: '#C026D3' },
-        path: '/ai/logo-generator'
-    },
-// ...existing code...
-// ...existing code...
-    {
-        title: 'Resume Reviewer',
-        description: 'Get your resume reviewed by AI to improve your chances of landing your dream job.',
-        Icon: FileText,
+        title: 'Background Blur',
+        description: 'Blur photo backgrounds while keeping the subject sharp and natural.',
+        Icon: Aperture,
         bg: { from: '#12B7AC', to: '#08B6CE' },
-        path: '/ai/review-resume'
+        path: '/ai/background-blur'
     }
 ]
 

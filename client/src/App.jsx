@@ -7,15 +7,8 @@ import RemoveBackground from "./pages/RemoveBackground";
 import RemoveObject from "./pages/RemoveObject";
 import Community from "./pages/Community";
 import ImageEnhancer from "./pages/ImageEnhancer";
-import LogoGenerator from "./pages/LogoGenerator";
 import PhotoRestoration from "./pages/PhotoRestoration";
 import BackgroundBlur from "./pages/BackgroundBlur";
-import WriteArticle from "./pages/WriteArticle";
-import BlogTitles from "./pages/BlogTitles";
-import EmailGenerator from "./pages/EmailGenerator";
-import ReadmeGenerator from "./pages/ReadmeGenerator";
-import CoverLetterGenerator from "./pages/CoverLetterGenerator";
-import ReviewResume from "./pages/ReviewResume";
 import { Toaster } from "react-hot-toast";
 
 const App = () => {
@@ -27,19 +20,12 @@ const App = () => {
         <Route path='/' element={<Home />} />
         <Route path='/ai' element={<Layout />} >
           <Route index element={<Dashboard />} />
-          <Route path='write-article' element={<WriteArticle />} />
-          <Route path='blog-titles' element={<BlogTitles />} />
-          <Route path='email-generator' element={<EmailGenerator />} />
-          <Route path='readme-generator' element={<ReadmeGenerator />} />
-          <Route path='cover-letter-generator' element={<CoverLetterGenerator />} />
           <Route path='generate-images' element={<GenerateImages />} />
           <Route path='remove-background' element={<RemoveBackground />} />
           <Route path='remove-object' element={<RemoveObject />} />
           <Route path='image-enhancer' element={<ImageEnhancer />} />
-          <Route path='logo-generator' element={<LogoGenerator />} />
           <Route path='photo-restoration' element={<PhotoRestoration />} />
           <Route path='background-blur' element={<BackgroundBlur />} />
-          <Route path='review-resume' element={<ReviewResume />} />
           <Route path='community' element={<Community />} />
         </Route>
       </Routes>

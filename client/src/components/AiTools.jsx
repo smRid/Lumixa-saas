@@ -28,7 +28,7 @@ const AiTools = () => {
                         Powerful AI Tools
                     </h2>
                     <p className='text-gray-400 max-w-xl mx-auto text-lg'>
-                        Everything you need to create, enhance, and optimize your content with cutting-edge AI technology.
+                        Everything you need to generate, restore, enhance, and refine photos with cutting-edge AI technology.
                     </p>
                 </div>
 

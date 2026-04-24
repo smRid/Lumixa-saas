@@ -1,5 +1,5 @@
 import { Protect, useClerk, useUser } from '@clerk/clerk-react'
-import { Eraser, House, Image, LogOut, Scissors, Users, ImageIcon, Palette, ScanText, Aperture } from 'lucide-react';
+import { Eraser, House, Image, LogOut, Scissors, Users, ImageIcon, ScanText, Aperture } from 'lucide-react';
 import { NavLink } from 'react-router-dom';
 
 const navItems = [
@@ -8,7 +8,6 @@ const navItems = [
   { to: '/ai/remove-background', label: 'Remove Background', Icon: Eraser },
   { to: '/ai/remove-object', label: 'Remove Object', Icon: Scissors },
   { to: '/ai/image-enhancer', label: 'Image Enhancer', Icon: ImageIcon },
-  { to: '/ai/logo-generator', label: 'Logo Generator', Icon: Palette },
   { to: '/ai/photo-restoration', label: 'Photo Restoration', Icon: ScanText },
   { to: '/ai/background-blur', label: 'Background Blur', Icon: Aperture },
   { to: '/ai/community', label: 'Community', Icon: Users },

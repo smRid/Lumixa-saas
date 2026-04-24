@@ -22,7 +22,7 @@ const Hero = () => {
                     <Sparkles className='w-6 h-6 text-white' />
                 </div>
                 <div className='absolute bottom-40 left-24 w-12 h-12 bg-blue-500 rounded-xl flex items-center justify-center shadow-lg animate-bounce' style={{ animationDelay: '1s', animationDuration: '4s' }}>
-                    <span className='text-white text-sm font-bold'>SEO</span>
+                    <span className='text-white text-sm font-bold'>HD</span>
                 </div>
                 <div className='absolute bottom-32 right-32 w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg animate-bounce' style={{ animationDelay: '1.5s', animationDuration: '3.2s' }}>
                     <span className='text-white text-lg font-bold'>Ps</span>
@@ -41,14 +41,14 @@ const Hero = () => {
                 {/* Main heading */}
                 <div className='text-center mb-8'>
                     <h1 className='text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mx-auto leading-[1.1] tracking-tight'>
-                        <span className='text-white'>Create amazing content</span>
+                        <span className='text-white'>Create amazing photos</span>
                         <br />
                         <span className='text-white'>with </span>
                         <span className='bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent'>AI tools</span>
                     </h1>
                     <p className='mt-6 max-w-2xl mx-auto text-lg sm:text-xl text-gray-400 leading-relaxed'>
-                        Transform your content creation with our suite of premium AI tools.
-                        Write articles, generate stunning images, and supercharge your workflow.
+                        Generate images, restore old photos, remove backgrounds, enhance details,
+                        and blur backgrounds in one workspace.
                     </p>
                 </div>
 

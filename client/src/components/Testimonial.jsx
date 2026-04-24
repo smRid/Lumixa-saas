@@ -5,16 +5,16 @@ const Testimonial = () => {
         {
             image: 'https://images.unsplash.com/photo-1633332755192-727a05c4013d?q=80&w=200',
             name: 'Briar Martin',
-            role: 'Content Creator',
+            role: 'Photo Creator',
             rating: 5,
-            text: 'Lumixa AI has completely transformed how I create content. The image generation is incredible!'
+            text: 'Lumixa AI has completely transformed how I create visuals. The image generation is incredible!'
         },
         {
             image: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=200',
             name: 'Avery Johnson',
             role: 'Marketing Director',
             rating: 5,
-            text: 'We\'ve cut our content creation time by 80%. The AI tools are intuitive and produce amazing results.'
+            text: 'We\'ve cut our photo editing time by 80%. The AI tools are intuitive and produce amazing results.'
         },
         {
             image: 'https://images.unsplash.com/photo-1527980965255-d3b416303d12?w=200&auto=format&fit=crop&q=60',
@@ -28,7 +28,7 @@ const Testimonial = () => {
             name: 'Taylor Swift',
             role: 'Startup Founder',
             rating: 5,
-            text: 'Best AI platform I\'ve used. The quality of generated content rivals professional work.'
+            text: 'Best AI platform I\'ve used. The quality of generated images rivals professional work.'
         },
     ];
 

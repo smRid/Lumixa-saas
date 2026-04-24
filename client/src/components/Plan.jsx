@@ -13,7 +13,7 @@ const Plan = () => {
             Choose Your Plan
           </h2>
           <p className='text-gray-400 max-w-lg mx-auto text-lg'>
-            Start for free and scale up as you grow. Find the perfect plan for your content creation needs.
+            Start for free and scale up as you grow. Find the perfect plan for your photo workflow.
           </p>
         </div>
 

@@ -36,7 +36,7 @@ const Footer = () => {
                             <span className='text-white font-semibold text-xl'>Lumixa AI</span>
                         </div>
                         <p className="text-gray-400 mb-6 max-w-sm leading-relaxed">
-                            Experience the power of AI with Lumixa AI. Transform your content creation with our suite of premium AI tools.
+                            Experience the power of AI with Lumixa AI. Generate, restore, enhance, and refine photos with premium AI tools.
                         </p>
 
                         {/* Newsletter */}
