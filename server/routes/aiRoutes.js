@@ -32,7 +32,7 @@ aiRouter.post('/generate-cover-letter', auth, generateCoverLetter)
 // Image-based AI tools
 aiRouter.post('/generate-image', auth, generateImage)
 aiRouter.post('/generate-logo', auth, generateLogo)
-aiRouter.post('/remove-image-background', upload.single('image'), auth, removeImageBackground)
+aiRouter.post('/remove-image-background', upload.fields([{ name: 'image', maxCount: 1 }, { name: 'images', maxCount: 10 }, { name: 'background_image', maxCount: 1 }]), auth, removeImageBackground)
 aiRouter.post('/remove-image-object', upload.single('image'), auth, removeImageObject)
 aiRouter.post('/enhance-image', upload.single('image'), auth, enhanceImage)
 aiRouter.post('/restore-photo', upload.single('image'), auth, restorePhoto)

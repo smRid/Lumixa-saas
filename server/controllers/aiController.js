@@ -12,6 +12,52 @@ const AI = new OpenAI({
     baseURL: "https://generativelanguage.googleapis.com/v1beta/openai/"
 });
 
+const clampNumber = (value, min, max, fallback) => {
+    const number = Number(value);
+    if (!Number.isFinite(number)) return fallback;
+    return Math.min(max, Math.max(min, number));
+}
+
+const getImageDimensions = (aspectRatio = '1:1', customWidth, customHeight) => {
+    if (aspectRatio === '16:9') return { width: 1280, height: 720 };
+    if (aspectRatio === '9:16') return { width: 720, height: 1280 };
+    if (aspectRatio === 'Custom') {
+        return {
+            width: clampNumber(customWidth, 256, 2048, 1024),
+            height: clampNumber(customHeight, 256, 2048, 1024)
+        };
+    }
+    return { width: 1024, height: 1024 };
+}
+
+const buildImagePrompt = ({
+    prompt,
+    style,
+    negative_prompt,
+    seed,
+    brand_name,
+    brand_colors,
+    brand_notes,
+    face_consistency,
+    transparent_background,
+    commercial_license
+}) => {
+    const parts = [
+        prompt,
+        style ? `Style preset: ${style}.` : '',
+        brand_name ? `Brand/campaign: ${brand_name}.` : '',
+        brand_colors ? `Use brand colors: ${brand_colors}.` : '',
+        brand_notes ? `Brand direction: ${brand_notes}.` : '',
+        face_consistency ? 'Keep faces consistent, natural, and recognizable across variations.' : '',
+        transparent_background ? 'Isolate the subject for transparent PNG output.' : '',
+        commercial_license ? 'Design as a polished commercial-use visual.' : '',
+        seed ? `Seed reference: ${seed}.` : '',
+        negative_prompt ? `Avoid: ${negative_prompt}.` : ''
+    ];
+
+    return parts.filter(Boolean).join(' ');
+}
+
 
 export const generateArticle = async (req, res) => {
     try {
@@ -110,31 +156,59 @@ export const generateBlogTitle = async (req, res) => {
 export const generateImage = async (req, res) => {
     try {
         const { userId } = req.auth();
-        const { prompt, publish } = req.body;
+        const {
+            prompt,
+            publish,
+            aspect_ratio,
+            custom_width,
+            custom_height,
+            batch_count,
+            transparent_background
+        } = req.body;
         const plan = req.plan;
 
         if (plan !== 'premium') {
             return res.json({ success: false, message: "This feature is only available for premium subscriptions." })
         }
 
-        const formData = new FormData()
-        formData.append('prompt', prompt)
-        const { data } = await axios.post("https://clipdrop-api.co/text-to-image/v1", formData, {
-            headers: { 'x-api-key': process.env.SECRET_API_KEY },
-            responseType: "arraybuffer",
-        })
+        if (!prompt || !prompt.trim()) {
+            return res.json({ success: false, message: "Please provide an image prompt." })
+        }
 
-        const base64Image = `data:image/png;base64,${Buffer.from(data, 'binary').toString('base64')}`;
+        const count = clampNumber(batch_count, 1, 4, 1);
+        const { width, height } = getImageDimensions(aspect_ratio, custom_width, custom_height);
+        const imagePrompt = buildImagePrompt(req.body);
+        const isTransparent = transparent_background === true || transparent_background === 'true';
+        const generatedImages = [];
 
-        const { secure_url } = await cloudinary.uploader.upload(base64Image)
+        for (let index = 0; index < count; index += 1) {
+            const formData = new FormData()
+            formData.append('prompt', count > 1 ? `${imagePrompt} Variation ${index + 1}.` : imagePrompt)
+            const { data } = await axios.post("https://clipdrop-api.co/text-to-image/v1", formData, {
+                headers: { 'x-api-key': process.env.SECRET_API_KEY },
+                responseType: "arraybuffer",
+            })
 
-        await sql` INSERT INTO creations (user_id, prompt, content, type, publish) VALUES (${userId}, ${prompt}, ${secure_url}, 'image', ${publish ?? false})
-        `;
+            const base64Image = `data:image/png;base64,${Buffer.from(data, 'binary').toString('base64')}`;
+            const uploadOptions = {
+                transformation: [
+                    { width, height, crop: "fill", gravity: "auto" },
+                    ...(isTransparent ? [{ effect: 'background_removal', background_removal: 'remove_the_background' }] : []),
+                    { quality: "auto:best" },
+                    { fetch_format: "png" }
+                ]
+            }
+
+            const { secure_url } = await cloudinary.uploader.upload(base64Image, uploadOptions)
+            generatedImages.push(secure_url)
+
+            await sql` INSERT INTO creations (user_id, prompt, content, type, publish) VALUES (${userId}, ${imagePrompt}, ${secure_url}, 'image', ${publish ?? false}) `;
+        }
 
         res.json({
             success: true,
-            content: secure_url,
-            message: "Image generated successfully"
+            content: count === 1 ? generatedImages[0] : generatedImages,
+            message: count === 1 ? "Image generated successfully" : `${count} image variations generated successfully`
         });
 
     } catch (error) {
@@ -146,30 +220,67 @@ export const generateImage = async (req, res) => {
 export const removeImageBackground = async (req, res) => {
     try {
         const { userId } = req.auth();
-        const image = req.file;
+        const uploadedImages = req.files?.images || req.files?.image || (req.file ? [req.file] : []);
+        const backgroundImage = req.files?.background_image?.[0];
+        const {
+            subject_type = 'Auto',
+            edge_refinement = 'Auto',
+            output_format = 'transparent_png',
+            background_color = '#ffffff',
+            shadow_preservation = true
+        } = req.body;
         const plan = req.plan;
 
         if (plan !== 'premium') {
             return res.json({ success: false, message: "This feature is only available for premium subscriptions." })
         }
 
+        if (!uploadedImages.length) {
+            return res.json({ success: false, message: "Please upload at least one image." })
+        }
 
-        const { secure_url } = await cloudinary.uploader.upload(image.path, {
-            transformation: [
+        const processedImages = [];
+
+        for (const image of uploadedImages) {
+            let transformation = [
                 {
                     effect: 'background_removal',
                     background_removal: 'remove_the_background'
                 }
-            ]
-        })
+            ];
 
-        await sql` INSERT INTO creations (user_id, prompt, content, type) VALUES (${userId}, 'Remove background from image', ${secure_url}, 'image')
-        `;
+            if (edge_refinement === 'Hair/Fur') {
+                transformation.push({ effect: "sharpen:30" });
+            } else if (edge_refinement === 'Glass') {
+                transformation.push({ effect: "improve" });
+            } else if (edge_refinement === 'Crisp Product') {
+                transformation.push({ effect: "sharpen:80" }, { effect: "auto_contrast" });
+            }
+
+            if (output_format === 'solid_color') {
+                transformation.push({ background: background_color.replace('#', '') });
+            } else if (output_format === 'custom_image' && backgroundImage) {
+                const bgUpload = await cloudinary.uploader.upload(backgroundImage.path);
+                transformation.push({ underlay: bgUpload.public_id, crop: "fill", gravity: "auto" });
+            }
+
+            if (shadow_preservation === 'true' || shadow_preservation === true) {
+                transformation.push({ effect: "dropshadow:30" });
+            }
+
+            transformation.push({ quality: "auto:best" }, { fetch_format: "png" });
+
+            const { secure_url } = await cloudinary.uploader.upload(image.path, { transformation })
+            processedImages.push(secure_url)
+
+            const prompt = `Remove background from image - Subject: ${subject_type}, Edge: ${edge_refinement}, Output: ${output_format}`;
+            await sql` INSERT INTO creations (user_id, prompt, content, type) VALUES (${userId}, ${prompt}, ${secure_url}, 'image') `;
+        }
 
         res.json({
             success: true,
-            content: secure_url,
-            message: "Remove background successfully"
+            content: processedImages.length === 1 ? processedImages[0] : processedImages,
+            message: processedImages.length === 1 ? "Background removed successfully" : `${processedImages.length} backgrounds removed successfully`
         });
 
     } catch (error) {
